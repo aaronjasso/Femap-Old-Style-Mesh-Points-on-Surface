@@ -1,4 +1,4 @@
-# Femap-Old-Style-Mesh-Point-on-Surface
+# Femap-Old-Style-Mesh-Points-on-Surface
 The Mesh Point Editor in Femap 12 is difficult to use. This macro recreates the Mesh Point on Surface command from Femap 11.
 
 ![Mesh Points on Surface User Interface Window](https://raw.githubusercontent.com/aaronjasso/Femap-Old-Style-Mesh-Point-on-Surface/master/MeshPointsOnSurface.png)

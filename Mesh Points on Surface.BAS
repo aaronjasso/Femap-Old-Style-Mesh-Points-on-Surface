@@ -22,7 +22,7 @@ Sub Main
     'along with this program.  If not, see <https://www.gnu.org/licenses/>.
     '
     'Created by AMJ, 4.17.2019
-	'Please comment or contribute at https://github.com/aaronjasso/Femap-Old-Style-Mesh-Point-on-Surface
+	'Please comment or contribute at https://github.com/aaronjasso/Femap-Old-Style-Mesh-Points-on-Surface
     '==================================
 
     Dim rc As Variant

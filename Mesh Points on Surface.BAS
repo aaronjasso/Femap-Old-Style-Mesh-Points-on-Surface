@@ -5,26 +5,26 @@ Sub Main
     '==================================
     'This macro defines mesh points on a surface similar to the
     'method prior to Femap 12.
-    '
-    'Copyright (c) 2019, Aaron Jasso
-    '
-    'This program is free software: you can redistribute it and/or modify
+	'
+	'Copyright (c) 2019, Aaron Jasso
+	'
+	'This program is free software: you can redistribute it and/or modify
     'it under the terms of the GNU General Public License as published by
     'the Free Software Foundation, either version 3 of the License, or
     '(at your option) any later version.
-    '
+	'
     'This program is distributed in the hope that it will be useful,
     'but WITHOUT ANY WARRANTY; without even the implied warranty of
     'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     'GNU General Public License for more details.
-    '
+	'
     'You should have received a copy of the GNU General Public License
     'along with this program.  If not, see <https://www.gnu.org/licenses/>.
     '
-	'Version 1.0
+	'Version 1.1
 	'
     'Created by AMJ, 4.17.2019
-    'Please comment or contribute at https://github.com/aaronjasso/Femap-Old-Style-Mesh-Points-on-Surface
+	'Please comment or contribute at https://github.com/aaronjasso/Femap-Old-Style-Mesh-Points-on-Surface
     '==================================
 
     Dim rc As Variant
@@ -68,27 +68,29 @@ Sub Main
 	Dim userNodes As femap.Set
 	Set userNodes = App.feSet
 	Dim position As Integer
-	position = 9999	'This is an inelegant hack to move the option button to remove existing mesh points out of the visible dialog area. If existing mesh points are found, it is returned to the visible area
 
-	If hasMeshPoints Then
-		position = 20
-	End If
-
-	Begin Dialog UserDialog 230,203,"Mesh Points" ' %GRID:10,7,1,1
+	Begin Dialog UserDialog 230,203,"Mesh Points",.DialogFunc ' %GRID:10,7,1,1
 		GroupBox 10,0,210,161,"Add/Remove Mesh Points",.GroupBox1
 		text 20,105,170,14,"No Existing Mesh Points",.Text1
 		OptionGroup .Group1
 			OptionButton 20,28,180,14,"Use Existing Points",.OptionButton1
 			OptionButton 20,49,180,14,"Use Existing Nodes",.OptionButton2
 			OptionButton 20,70,180,14,"Create Points",.OptionButton3
-			OptionButton position,105,180,14,"Remove Existing Points",.OptionButton4
-		CheckBox position,126,190,14,"Also remove underlying",.RemGPoints,1
-		text position+20,140,130,14,"geometric points",.Text2
+			OptionButton 20,105,180,14,"Remove Existing Points",.OptionButton4
+		CheckBox 20,126,190,14,"Also remove underlying",.RemGPoints,1
+		text 40,140,130,14,"geometric points",.Text2
 		OKButton 10,168,100,28
 		PushButton 120,168,100,28,"Cancel",.PushButton1
+		'CheckBox 500,500,500,500,"HasPoints",.hiddenHasPoints
+		CheckBox 0,0,0,0,"HasPoints",.hiddenHasPoints
 	End Dialog
 	Dim dlg As UserDialog
 	'Dialog dlg
+
+	'A dlgItem is necessary to pass information into DialogFunc (in this case, whether the surface already has mesh points or not)
+	If hasMeshPoints Then
+		dlg.hiddenHasPoints = 1
+	End If
 
 	'handle cancel button
 	If Dialog(dlg) = 1 Then
@@ -195,3 +197,20 @@ Sub Main
 	App.feAppUpdatePanes(True)
 
 End Sub
+
+Function dialogfunc(DlgItem As String, Action As Integer, SuppValue As Integer) As Boolean
+    Select Case Action
+    Case 1 ' Dialog box initialization
+        DlgVisible "hiddenHasPoints",False
+        'If Not(hasMeshPoints) Then
+        'If Not(Val(DlgValue("hiddenHasPoints"))) Then
+        If DlgValue("hiddenHasPoints") = 0 Then
+			DlgEnable "OptionButton4", False
+			DlgEnable "RemGPoints", False
+			DlgEnable "Text2",False
+        End If
+    Case 5 ' Idle
+        Wait .1
+    End Select
+End Function
+

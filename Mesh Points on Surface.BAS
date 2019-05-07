@@ -5,26 +5,26 @@ Sub Main
     '==================================
     'This macro defines mesh points on a surface similar to the
     'method prior to Femap 12.
-	'
-	'Copyright (c) 2019, Aaron Jasso
-	'
-	'This program is free software: you can redistribute it and/or modify
+    '
+    'Copyright (c) 2019, Aaron Jasso
+    '
+    'This program is free software: you can redistribute it and/or modify
     'it under the terms of the GNU General Public License as published by
     'the Free Software Foundation, either version 3 of the License, or
     '(at your option) any later version.
-	'
+    '
     'This program is distributed in the hope that it will be useful,
     'but WITHOUT ANY WARRANTY; without even the implied warranty of
     'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     'GNU General Public License for more details.
-	'
+    '
     'You should have received a copy of the GNU General Public License
     'along with this program.  If not, see <https://www.gnu.org/licenses/>.
     '
-	'Version 1.1
-	'
+    'Version 1.1
+    '
     'Created by AMJ, 4.17.2019
-	'Please comment or contribute at https://github.com/aaronjasso/Femap-Old-Style-Mesh-Points-on-Surface
+    'Please comment or contribute at https://github.com/aaronjasso/Femap-Old-Style-Mesh-Points-on-Surface
     '==================================
 
     Dim rc As Variant
@@ -85,7 +85,6 @@ Sub Main
 		CheckBox 0,0,0,0,"HasPoints",.hiddenHasPoints
 	End Dialog
 	Dim dlg As UserDialog
-	'Dialog dlg
 
 	'A dlgItem is necessary to pass information into DialogFunc (in this case, whether the surface already has mesh points or not)
 	If hasMeshPoints Then
@@ -104,6 +103,10 @@ Sub Main
 	Set iterNode = App.feNode
 	Dim iterPoint As femap.Point
 	Set iterPoint = App.fePoint
+	
+    '==================================
+    'Get entities to add MPs, or remove existing MPs as selected by user
+    '==================================
 
 	Select Case dlg.Group1
 	Case 0	'Choose existing points
@@ -136,7 +139,6 @@ Sub Main
 				.layer = userSurface.layer
 			End With
 			rc = newPoint.Put(newPoint.ID)
-			'MsgBox("The Return Code is: " & rc,vbInformation,"Return Code")
 			userPoints.Add(newPoint.ID)
 			App.feViewRegenerate(0)
 		Wend
@@ -155,7 +157,6 @@ Sub Main
 				And iterMP.OnGeometryID = userSurface.ID Then
 				iterPoint.Get(iterMP.pointID)
 				rc = iterMP.Delete(meshSet.CurrentID)
-				'MsgBox("The Return Code is: " & rc,vbInformation,"Return Code")
 				If dlg.RemGPoints = 1 Then
 					rc = iterPoint.Delete(iterPoint.ID)
 				End If
@@ -164,9 +165,6 @@ Sub Main
 		Wend
 		App.feViewRegenerate(0)
 		App.feAppUpdatePanes(True)
-		'MsgBox(i & " Mesh Points deleted." & vbNewLine _
-		'	& "Note: the Mesh Point Editor dockable pane might" & vbNewLine _
-		'	& "still show mesh points. Close and reopen it to refresh.", vbInformation,"Removal Complete")
 		App.feAppMessage(FCM_NORMAL,i & " Mesh Points deleted")
 		App.feAppMessage(FCM_WARNING,"Note: the Mesh Point Editor dockable pane might still show mesh points; close and reopen it to refresh")
 		Exit Sub
@@ -202,8 +200,6 @@ Function dialogfunc(DlgItem As String, Action As Integer, SuppValue As Integer) 
     Select Case Action
     Case 1 ' Dialog box initialization
         DlgVisible "hiddenHasPoints",False
-        'If Not(hasMeshPoints) Then
-        'If Not(Val(DlgValue("hiddenHasPoints"))) Then
         If DlgValue("hiddenHasPoints") = 0 Then
 			DlgEnable "OptionButton4", False
 			DlgEnable "RemGPoints", False

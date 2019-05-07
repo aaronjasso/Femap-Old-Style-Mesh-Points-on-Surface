@@ -95,6 +95,10 @@ Sub Main
 	If Dialog(dlg) = 1 Then
 		Exit Sub
 	End If
+	
+    '==================================
+    'Get entities to add MPs, or remove existing MPs as selected by user
+    '==================================
 
 	'Get user defined points or nodes
 	Dim newPoint As femap.Point
@@ -103,10 +107,6 @@ Sub Main
 	Set iterNode = App.feNode
 	Dim iterPoint As femap.Point
 	Set iterPoint = App.fePoint
-	
-    '==================================
-    'Get entities to add MPs, or remove existing MPs as selected by user
-    '==================================
 
 	Select Case dlg.Group1
 	Case 0	'Choose existing points

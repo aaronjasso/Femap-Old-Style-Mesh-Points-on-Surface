@@ -1,5 +1,5 @@
 # Femap-Old-Style-Mesh-Points-on-Surface
-The Mesh Point Editor in Femap 12 is difficult to use, so don't!
+The Mesh Point Editor in Femap 12 (and later) is difficult to use, so don't!
 
 See also: [How to use Femap Scripts](https://github.com/aaronjasso/How_to_use_Femap_Scripts) and [The List of my Femap Scripts](https://github.com/aaronjasso/My-Femap-Scripts)
 
